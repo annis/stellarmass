@@ -1,5 +1,20 @@
-*.pdf
-*.py~
+# Complied python modules
 *.pyc
-*.txt
+
+# VIM cached files
+*~
+
+# data directory 
 simha*
+# data files
+*.hdr
+
+# Notes to myself
+Notes
+
+# tar files
+*.tar
+*.tar.gz
+
+# junk files
+jack*
