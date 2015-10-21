@@ -3,10 +3,14 @@ import numpy as np
 # do them all
 def doall ( dir = "simha/") :
     data = []
-    for metal in [17, 20, 22] :
-        for start in [0.7, 1.0, 1.5] :
-            for trunc in [7, 9, 11] :
-                for tau in [0.3, 1.0, 2.0, 9.0] :
+    metallicites_basel = [10,14,17, 20, 22]
+    metallicites_miles = [2,3,4, 5]        
+    metallicites = metallicites_basel
+    metallicites = metallicites_miles
+    for metal in metallicites:
+        for start in [0.7, 1.0, 1.5, 2.0] :
+            for trunc in [7, 9, 11, 13] :
+                for tau in [0.3, 1.0, 1.3, 2.0, 9.0, 13.0] :
                     for theta in [-0.175, -0.524, -0.785, -1.047, -1.396] :
                         file = "s-" + str(metal) + "-" +str(start) + "-"
                         file = file + str(trunc) + "-" + str(tau) + str(theta)
@@ -15,6 +19,27 @@ def doall ( dir = "simha/") :
                         data.append([ug,gr,ri,iz,grr,gir,kii,kri,ml])
                         
     return data
+
+def doallnames ( dir = "simha/") :
+    data = []
+    metallicites_basel = [10,14,17, 20, 22]
+    metallicites_miles = [2,3,4,5]        
+    metallicites = metallicites_basel
+    metallicites = metallicites_miles
+    counter = 0
+    names = dict()
+    for metal in metallicites:
+        for start in [0.7, 1.0, 1.5, 2.0] :
+            for trunc in [7, 9, 11, 13] :
+                for tau in [0.3, 1.0, 1.3, 2.0, 9.0, 13.0] :
+                    for theta in [-0.175, -0.524, -0.785, -1.047, -1.396] :
+                        file = "s-" + str(metal) + "-" +str(start) + "-"
+                        file = file + str(trunc) + "-" + str(tau) + str(theta)
+                        file = dir + file + ".mags"
+                        names[counter] = file       
+                        names[counter,"metals"] = metal
+                        counter += 1
+    return names
 
 
 #   Log(Z/Zsol):  0.000

@@ -1,16 +1,28 @@
 import numpy as np
 
 # do them all
-def doall ( dir = "simha/") :
-    for metal in [10, 14, 17, 20, 22] :
-        for start in [0.7, 1.0, 1.5, 2.0] :
-            for trunc in [7, 9, 11, 13] :
-                for tau in [0.3, 0.7, 1.0, 1.3, 2.0, 9.0, 13.0] :
-                    for theta in [-0.175, -0.524, -0.785, -1.047, -1.396] :
+def doall ( dir = "simha-miles-imf-alpha/") :
+    metallicites_basel = [10,14,17, 20, 22]
+    metallicites_miles = [2,3,4, 5]        
+    metallicites = metallicites_miles
+    sf_start = [0.7, 1.0, 1.5,2.0] 
+    sf_trunc = [7, 9, 11, 13]
+    sf_tau = [0.3, 0.7, 1.0, 1.3, 2.0, 9.0, 13.0]
+    sf_theta = [-0.175, -0.524, -0.785, -1.047, -1.396]
+    metallicites_miles = [5,4]      
+    sf_start = [2.0,]             
+    sf_trunc = [7, ]
+    sf_tau = [0.3, ]
+    sf_theta = [-1.047, ]
+    for metal in metallicites :
+        for start in sf_start :
+            for trunc in sf_trunc :
+                for tau in sf_tau :
+                    for theta in sf_theta :
                         file = "s-" + str(metal) + "-" +str(start) + "-"
                         file = file + str(trunc) + "-" + str(tau) + str(theta)
                         file = dir + file + "-zm.mags"
-                        addRestframeGR ( file ) 
+                        addRestframeGR (file ) 
 
 
 #   Log(Z/Zsol):  0.000
@@ -27,8 +39,11 @@ def doall ( dir = "simha/") :
 
 def addRestframeGR ( filename ) :
 
+    # filename = s-4-2.0-7-1.3-0.175-zm.mags
+    # rest = s-4-2.0-7-1.3-0.175-0m.mags
+    # out = s-4-2.0-7-1.3-0.175.mags
     restFilename = filename.replace("-zm.mags","-0m.mags")
-    outputFile = filename.replace("-zm.mags",".mags")
+    outputFile =  filename.replace("-zm.mags",".mags")
     dummyNum1 = -70.0000
     dummyNum2 = 99.000
     
