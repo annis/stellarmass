@@ -1,16 +1,23 @@
 import numpy as np
 
 # do them all
-def doall ( dir = "simha/") :
+#   lib can be miles or basel
+def doall ( dir = "simha/", lib="basel") :
     data = []
     metallicites_basel = [10,14,17, 20, 22]
     metallicites_miles = [2,3,4, 5]        
     metallicites = metallicites_basel
-    metallicites = metallicites_miles
+    if lib == "miles" : metallicites = metallicites_miles
     for metal in metallicites:
-        for start in [0.7, 1.0, 1.5, 2.0] :
-            for trunc in [7, 9, 11, 13] :
-                for tau in [0.3, 1.0, 1.3, 2.0, 9.0, 13.0] :
+        #for start in [0.7, 1.0, 1.5, 2.0] :
+        #    for trunc in [7, 9, 11, 13] :
+        #        for tau in [0.3, 1.0, 1.3, 2.0, 9.0, 13.0] :
+        for start in [1.5, 2.0] :
+            for trunc in [11, 13] :
+                for tau in [1.3, 2.0, 9.0, 13.0] :
+        #for start in [0.7, 1.0 ] :
+        #    for trunc in [7, 9] :
+        #        for tau in [0.3, 1.0] :
                     for theta in [-0.175, -0.524, -0.785, -1.047, -1.396] :
                         file = "s-" + str(metal) + "-" +str(start) + "-"
                         file = file + str(trunc) + "-" + str(tau) + str(theta)
@@ -20,12 +27,13 @@ def doall ( dir = "simha/") :
                         
     return data
 
-def doallnames ( dir = "simha/") :
+#   lib can be miles or basel
+def doallnames ( dir = "simha/", lib="basel") :
     data = []
     metallicites_basel = [10,14,17, 20, 22]
     metallicites_miles = [2,3,4,5]        
     metallicites = metallicites_basel
-    metallicites = metallicites_miles
+    if lib == "miles" : metallicites = metallicites_miles
     counter = 0
     names = dict()
     for metal in metallicites:

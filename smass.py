@@ -6,16 +6,14 @@ import loadPopColors
 # it expects id, i, ierr, gr,ri,iz, grerr, rierr, izerr
 #
 #
-def calc (inputDataDict, outfile, zed, indir="simha/") :
+def calc (inputDataDict, outfile, indir="simha/", lib="basel") :
     from scipy.stats import chi2
     import CosmologicalDistance
     import os
     cd = CosmologicalDistance.CosmologicalDistance()
     ldistDict = dict()
     splineDict = dict()
-    splines = loadPopColors.doall(indir)
-    id, i, ierr, gr,ri,iz, grerr,rierr,izerr, mass, \
-            mass_low, mass_med, mass_hi = readAnn()
+    splines = loadPopColors.doall(indir, lib=lib)
     id  = inputDataDict["id"]
     i  = inputDataDict["i"]
     ierr  = inputDataDict["ierr"]
@@ -25,6 +23,7 @@ def calc (inputDataDict, outfile, zed, indir="simha/") :
     grerr  = inputDataDict["grerr"]
     rierr  = inputDataDict["rierr"]
     izerr  = inputDataDict["izerr"]
+    allzed = inputDataDict["zed"]
 
     # protect against too small of errors => values = 0
     ix = np.nonzero(grerr < 0.02)
@@ -34,17 +33,18 @@ def calc (inputDataDict, outfile, zed, indir="simha/") :
     ix = np.nonzero(izerr < 0.02)
     izerr[ix] = 0.02
 
+    # prepping for output
     out_id, out_gr, out_stdgr, out_gi, out_stdgi, \
         out_kri, out_stdkri, out_kii, out_stdkii, out_iobs, out_distmod, \
         out_rabs, out_iabs, out_mass_gr, out_mass_gi, out_mass, out_stdmass = \
         [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
     out_bestsp = []
 
-
     size = id.size
     #size = 10
     for galaxy in range(0,size) :
-        print galaxy,"  of  ",size
+        zed = allzed[galaxy]
+        print galaxy,"  of  ",size,"    z = ",zed
 
         rest_gr,rest_gi,weight = [],[],[]
         masslight, kii, kri = [],[],[]
@@ -63,7 +63,33 @@ def calc (inputDataDict, outfile, zed, indir="simha/") :
                 skii = splines[sp][6](zed) ;# kcorrection: i_o - i_obs
                 skri = splines[sp][7](zed) ;# kcorrection: r_o - i_obs
                 sml = splines[sp][8](zed) ;# log(mass/light)  (M_sun/L_sun)
-???END
+                splineDict[skey] = sgr,sri,siz,sgrr,sgir,skii,skri,sml
+            gre = grerr[galaxy]
+            rie = rierr[galaxy]
+            ize = izerr[galaxy]
+            gr_chisq = pow((gr[galaxy] - sgr)/gre,2)
+            ri_chisq = pow((ri[galaxy] - sri)/rie,2)
+            iz_chisq = pow((iz[galaxy] - siz)/ize,2)
+            rest_gr.append(sgrr)
+            rest_gi.append(sgir)
+            kii.append(skii)
+            kri.append(skri)
+            masslight.append(sml)
+            chisq = gr_chisq + ri_chisq + iz_chisq
+            probability = 1-chi2.cdf(chisq, 3-1) ;# probability of chisq greater than this
+            weight.append(probability)
+        spIndex = np.argmax(weight)
+        rest_gr = np.array(rest_gr)
+        rest_gi = np.array(rest_gi)
+        kii = np.array(kii)
+        kri = np.array(kri)
+        masslight = np.array(masslight)
+        weight = np.array(weight)
+        gr_weighted = rest_gr * weight
+        gi_weighted = rest_gi * weight
+        kii_weighted = kii * weight
+        kri_weighted = kri * weight
+        masslight_weighted = masslight * weight
         w1 = weight.sum()
         w2 = (weight**2).sum()
         if w1 == 0 : w1 = 1e-10
