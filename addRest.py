@@ -1,19 +1,18 @@
 import numpy as np
 
 # do them all
-def doall ( dir = "simha-miles-imf-alpha/") :
+def doall ( dir = "simha-miles-imf-alpha/", stellar="miles") :
     metallicites_basel = [10,14,17, 20, 22]
     metallicites_miles = [2,3,4, 5]        
-    metallicites = metallicites_miles
+    if stellar == "miles" :
+        metallicites = metallicites_miles
+    elif stellar == "basel" :
+        metallicites = metallicites_basel
+    else : raise Exception("only basel and miles implemented"
     sf_start = [0.7, 1.0, 1.5,2.0] 
     sf_trunc = [7, 9, 11, 13]
     sf_tau = [0.3, 0.7, 1.0, 1.3, 2.0, 9.0, 13.0]
     sf_theta = [-0.175, -0.524, -0.785, -1.047, -1.396]
-    metallicites_miles = [5,4]      
-    sf_start = [2.0,]             
-    sf_trunc = [7, ]
-    sf_tau = [0.3, ]
-    sf_theta = [-1.047, ]
     for metal in metallicites :
         for start in sf_start :
             for trunc in sf_trunc :

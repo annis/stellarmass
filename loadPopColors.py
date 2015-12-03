@@ -9,15 +9,9 @@ def doall ( dir = "simha/", lib="basel") :
     metallicites = metallicites_basel
     if lib == "miles" : metallicites = metallicites_miles
     for metal in metallicites:
-        #for start in [0.7, 1.0, 1.5, 2.0] :
-        #    for trunc in [7, 9, 11, 13] :
-        #        for tau in [0.3, 1.0, 1.3, 2.0, 9.0, 13.0] :
-        for start in [1.5, 2.0] :
-            for trunc in [11, 13] :
-                for tau in [1.3, 2.0, 9.0, 13.0] :
-        #for start in [0.7, 1.0 ] :
-        #    for trunc in [7, 9] :
-        #        for tau in [0.3, 1.0] :
+        for start in [0.7, 1.0, 1.5, 2.0] :
+            for trunc in [7, 9, 11, 13] :
+                for tau in [0.3, 1.0, 1.3, 2.0, 9.0, 13.0] :
                     for theta in [-0.175, -0.524, -0.785, -1.047, -1.396] :
                         file = "s-" + str(metal) + "-" +str(start) + "-"
                         file = file + str(trunc) + "-" + str(tau) + str(theta)
