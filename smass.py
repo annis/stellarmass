@@ -129,6 +129,9 @@ def calc (inputDataDict, outfile, indir="simha/", lib="basel") :
         taMass = taylorMass(mean_gi, iabs) 
         mcMass = mcintoshMass(mean_gr, rabs) 
         fsMass = fspsMass( mean_masslight, iabs )
+        # JTA: to make purely distance modulus
+        #iabs = i[galaxy] - distanceModulus 
+        #fsMass = gstarMass( iabs )
 
         # saving for output
         out_id.append( id[galaxy] )
@@ -212,19 +215,23 @@ def taylorMass (gi, iabs) :
     os.system("cat {} >> {}; rm {}".format(outfile+".dat", outfile, outfile+".dat"))
 
 
-def taylorMass (gi, iabs) :
-    # equation 8, taylor et al 2011 MNRAS, V418, Issue 3, pp. 1587-1620
-    mass = -0.68 + 0.70*gi - 0.4*(iabs - 4.58)
-    # assumes h=0.7
-    return mass
-
 def mcintoshMass (gr, rabs, h=0.7) :
     # equation 1, McIntosh et al 2014, arXiv:1308.0054v2
     mass = -0.406 + 1.097*gr - 0.4*(rabs - 5*np.log10(h) - 4.64)
     # log(mass/h^2) 
     return mass
 
+def taylorMass (gi, iabs) :
+    # equation 8, taylor et al 2011 MNRAS, V418, Issue 3, pp. 1587-1620
+    mass = -0.68 + 0.70*gi - 0.4*(iabs - 4.58)
+    # assumes h=0.7
+    return mass
+
 def fspsMass( masstolight , iabs) :
     # following the above, which assumes h=0.7
     mass =  masstolight - 0.4*(iabs - 4.58)
+    return mass
+# how far off is just distance modulus?
+def gstarMass(iabs) :
+    mass =  - 0.4*(iabs - 4.58)
     return mass
