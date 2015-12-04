@@ -9,11 +9,6 @@ def doall (dir = "simha-miles-imf-alpha/") :
     sf_trunc = [7, 9, 11, 13]
     sf_tau = [0.3, 0.7, 1.0, 1.3, 2.0, 9.0, 13.0]
     sf_theta = [-0.175, -0.524, -0.785, -1.047, -1.396]
-    metallicites_miles = [5,4] 
-    sf_start = [2.0,] 
-    sf_trunc = [7, ]
-    sf_tau = [0.3, ]
-    sf_theta = [-1.047, ]
     for metal in metallicites :
         for start in sf_start :
             for trunc in sf_trunc :

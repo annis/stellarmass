@@ -63,7 +63,6 @@ def calc (inputDataDict, outfile, zed, indir="simha/") :
                 skii = splines[sp][6](zed) ;# kcorrection: i_o - i_obs
                 skri = splines[sp][7](zed) ;# kcorrection: r_o - i_obs
                 sml = splines[sp][8](zed) ;# log(mass/light)  (M_sun/L_sun)
-???END
         w1 = weight.sum()
         w2 = (weight**2).sum()
         if w1 == 0 : w1 = 1e-10
