@@ -1,14 +1,21 @@
 import numpy as np
 
 # do them all
-def doall (dir = "simha-miles-imf-alpha/") :
-    metallicites_miles = [2,3,4, 5] 
-    metallicites_basel = [10,14,17, 20, 22] 
-    metallicites = metallicites_miles
+def doall (dir = "simha-miles-imf-alpha/", \
+        alpha=False, no_alpha_dir = "simha-miles-imf/", stellar="miles" ) :
+    metallicites_miles = [2,3,4, 5]  ;# Z=0.0031, 0.0096, 0.019, 0.030,solar=0.019
+    metallicites_basel = [10,14,17, 20, 22] ;# Z=0.002, 0.0049, 0.0096, 0.019,0.03
+    if stellar == "miles" :
+        metallicites = metallicites_miles
+    elif stellar == "basel" : 
+        metallicites = metallicites_basel
+    else : raise Exception("only basel and miles implemented")
     sf_start = [0.7, 1.0, 1.5,2.0] 
     sf_trunc = [7, 9, 11, 13]
     sf_tau = [0.3, 0.7, 1.0, 1.3, 2.0, 9.0, 13.0]
     sf_theta = [-0.175, -0.524, -0.785, -1.047, -1.396]
+
+    # main work
     for metal in metallicites :
         for start in sf_start :
             for trunc in sf_trunc :
@@ -16,10 +23,21 @@ def doall (dir = "simha-miles-imf-alpha/") :
                     for theta in sf_theta :
                         file = "s-" + str(metal) + "-" +str(start) + "-"
                         file = file + str(trunc) + "-" + str(tau) + str(theta)
-                        file1 = dir + file + "-z.mags"
-                        file2 = dir + file + "-0.mags"
-                        majorMinor(file1)
-                        majorMinor(file2)
+                        file1 = file + "-z.mags"
+                        # working the case of alpha, 
+                        # where sub-solar metallicty unaffected
+                        minority_dir = dir 
+                        if alpha :
+                            minority_dir = no_alpha_dir
+                            if (metallicites == metallicites_miles) and \
+                                (metal < 4) :
+                                    dir = no_alpha_dir
+                            elif (metallicites == metallicites_basel) and \
+                                (metal < 20) :
+                                    dir = no_alpha_dir
+                        file2 = file + "-0.mags"
+                        majorMinor(dir, file1, minority_dir, stellar)
+                        majorMinor(dir, file2, minority_dir, stellar)
 
 
 #   Log(Z/Zsol):  0.000
@@ -34,28 +52,31 @@ def doall (dir = "simha-miles-imf-alpha/") :
 #20.000  5.5000 -70.0000   0.0000 -70.0000  99.000  99.000  99.000  99.000  99.000
 #20.000  5.5250 -70.0000   0.0000 -70.0000  99.000  99.000  99.000  99.000  99.000
 
-def majorMinor ( majorFile ) :
+def majorMinor ( dir, majorFile, minorityDir, stellarLib="miles" ) :
     scale = .03   # we'll add a three percent by mass minority population
-    scale = .00   # we'll add a three percent by mass minority population
+#    scale = .00   # we'll add no minority population
 
     pwords = majorFile.split("/")
     fname = pwords[-1]
     words = fname.split("-")
-    minorName_basel = "s-4"
     minorName_miles = "s-1"
-    minorName = minorName_miles
+    minorName_basel = "s-4"
+    if stellarLib == "miles" :
+        minorName = minorName_miles
+    else :
+        minorName = minorName_basel
     for j in range(2,len(words)) :
         minorName = minorName + "-" + words[j]
     minorFile = ""
     for j in range(0,len(pwords)-1) :
         minorFile = minorFile + pwords[j] + "/"
     minorFile = minorFile + minorName
-    outputFile = majorFile.replace(".mags","m.mags")
+    outputFile = dir + majorFile.replace(".mags","m.mags")
     dummyNum1 = -70.0000
     dummyNum2 = 99.000
     
-    majorHdr, majorData = read(majorFile)
-    minorHdr, minorData = read(minorFile)
+    majorHdr, majorData = read(dir + majorFile)
+    minorHdr, minorData = read(minorityDir + minorFile)
     zed, age, mass, lum, sfr, u, g, r, i, z = lineToNP(majorData) 
     mzed, mage, mmass, mlum, msfr, mu, mg, mr, mi, mz = lineToNP(minorData) 
 
