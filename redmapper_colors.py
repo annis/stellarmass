@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt;
 
 # rm_ra,rm_dec, rm_zed, rm_zspec, rm_imag,rm_ug,rm_gr,rm_ri,rm_iz,rm_imagerr, rm_ugerr, rm_grerr,rm_rierr,rm_izerr = redmapper_colors.get()
 # ix=(rm_gr>0)&(rm_gr<2.0);plt.clf();plt.hexbin(rm_zed[ix], rm_gr[ix])  
-# reload(redmapper_colors);redmapper_colors.plot_simha(dir+"/s-5-2.0-7-1.3-0.175-zm.mags"); plt.xlim(0.09,0.47);plt.ylim(0.9,1.95)
+# reload(redmapper_colors);redmapper_colors.plot_simha(dir+"/s-3-2.0-7-1.3-0.175-zm.mags"); plt.xlim(0.09,0.46);plt.ylim(0.9,1.95)
 #  r-i : plt.xlim(0.09,0.46);plt.ylim(0.38,0.9)
 # g-r, r-i: ;plt.xlim(0.9,1.95) ;plt.ylim(0.38,0.9)
 def plot_simha(file="/Users/annis/Code/jta_outputs_fsps/s-20-0.7-11-0.3-0.785-z.mags", zlow=0.06, zhi=0.6) :
@@ -42,13 +42,13 @@ def plot_simha(file="/Users/annis/Code/jta_outputs_fsps/s-20-0.7-11-0.3-0.785-z.
     x1 = nzed; x2 = nri; t1="zed"; t2="ri"
     plt.xlim(0.09,0.46);plt.ylim(0.38,0.9)
     # g-r vs r-i
-    del_ri = 0.03
-    del_ri=0.0
-    plt.plot(gr[ix2],ri[ix2]+del_ri,c="w");
-    plt.xlabel("g-r");plt.ylabel("r-i"); 
-    plt.scatter(ngr,nri+del_ri,c=nzed,s=100); 
-    x1 = ngr; x2 = nri+del_ri; t1="gr"; t2="ri"
-    plt.xlim(0.9,1.95) ;plt.ylim(0.38,0.9)
+    #del_ri = 0.03
+    #del_ri=0.0
+    #plt.plot(gr[ix2],ri[ix2]+del_ri,c="w");
+    #plt.xlabel("g-r");plt.ylabel("r-i"); 
+    #plt.scatter(ngr,nri+del_ri,c=nzed,s=100); 
+    #x1 = ngr; x2 = nri+del_ri; t1="gr"; t2="ri"
+    #plt.xlim(0.9,1.95) ;plt.ylim(0.38,0.9)
     # u-g vs z
     #plt.plot(zed[ix2],ug[ix2],c="w");
     #plt.xlabel("z");plt.ylabel("u-g"); 

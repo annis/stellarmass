@@ -1,4 +1,5 @@
 import numpy as np
+# reload(loadPopColors); simha=loadPopColors.doallnames( "/Users/annis/Code/fsps/simha/",lib="basel"); keys = np.fromiter(iter(simha.values()),dtype="a100");
 
 # do them all
 #   lib can be miles or basel
